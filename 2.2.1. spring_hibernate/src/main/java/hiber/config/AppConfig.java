@@ -22,10 +22,11 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan(value = "hiber")
 public class AppConfig {
-
-   @Autowired
    private Environment env;
-
+   @Autowired
+   public AppConfig(Environment env) {
+      this.env = env;
+   }
    @Bean
    public DataSource getDataSource() {
       DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -35,7 +36,6 @@ public class AppConfig {
       dataSource.setPassword(env.getProperty("db.password"));
       return dataSource;
    }
-
    @Bean
    public LocalSessionFactoryBean getSessionFactory() {
       LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
@@ -49,7 +49,6 @@ public class AppConfig {
       factoryBean.setAnnotatedClasses(User.class, Car.class);
       return factoryBean;
    }
-
    @Bean
    public HibernateTransactionManager getTransactionManager() {
       HibernateTransactionManager transactionManager = new HibernateTransactionManager();
